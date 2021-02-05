@@ -1,0 +1,50 @@
+{
+  "name": "print-html-to-pdf",
+  "version": "1.0.4",
+  "description": "Print html to pdf using jsPDF and dom-to-image.",
+  "main": "dist/print-html-to-pdf.js",
+  "module": "dist/print-html-to-pdf.js",
+  "scripts": {
+    "prebuild": "npx rimraf ./dist",
+    "test": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --disable-host-check --host 127.0.0.1",
+    "dev": "cross-env NODE_ENV=development webpack --mode development --watch",
+    "build-development": "cross-env NODE_ENV=development webpack --mode development",
+    "build-production": "cross-env NODE_ENV=production webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crazilazi/print-html-to-pdf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/crazilazi/print-html-to-pdf/issues"
+  },
+  "homepage": "https://github.com/crazilazi/print-html-to-pdf#readme",
+  "keywords": [
+    "npm",
+    "print",
+    "pdf",
+    "jsPDF",
+    "dom-to-image"
+  ],
+  "author": "crazilazi",
+  "license": "MIT",
+  "dependencies": {
+    "dom-to-image": "^2.6.0",
+    "jspdf": "^2.3.0",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.2",
+    "css-loader": "^5.0.1",
+    "file-loader": "^6.2.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "print-html-to-pdf",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Print html to pdf using jsPDF and dom-to-image.",
   "main": "dist/print-html-to-pdf.js",
   "module": "dist/print-html-to-pdf.js",

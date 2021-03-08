@@ -72,7 +72,8 @@ class PrintHtmlToPDF {
       fileName: 'default',
       hideDomNodeUsingGivenSelectors: {
         id: [],
-        class: []
+        class: [],
+        nodes: []
       }
     };
     this.spinner = spinner;
@@ -110,6 +111,12 @@ class PrintHtmlToPDF {
       });
     }
 
+    if (nodes.length) {
+      nodes.forEach(ele => {
+        ele.style.display = 'none';
+      });
+    }
+
   };
 
   /*
@@ -140,6 +147,12 @@ class PrintHtmlToPDF {
             ele.style.display = '';
           }
         );
+      });
+    }
+
+    if (nodes.length) {
+      nodes.forEach(ele => {
+        ele.style.display = '';
       });
     }
   };

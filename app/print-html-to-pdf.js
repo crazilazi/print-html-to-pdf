@@ -19,27 +19,46 @@ class PrintHtmlToPDF {
      jsPDF: {
        unit: 'px',
        format: 'a4',
-     }
+     },
+      spin: false,
+      fileName: 'default',
+      hideDomNodeUsingGivenSelectors: {
+        id: [],
+        class: []
+      }
    };
  */
   print = async (node, option = {}) => {
     option = _.merge(this.defaultOption, option);
-    const fileName = "default";
-    if (fileName === 'closed') {
-      return;
+    if (option.fileName === '') {
+      option.fileName = "default";
     }
-    spinner.spin();
+    const imageType = 'image/png';
+    if (option.spin) {
+      this.spinner.spin();
+    }
 
-    const dataUrl = await this.__htmlToImageDataUrl(node, spinner);
+    this.__hideNodesUsingGivenSelector(node, option.hideDomNodeUsingGivenSelectors);
+
+    const dataUrl = await this.__htmlToImageDataUrl(node, option);
     const pdf = new jsPDF(option.jsPDF);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     const imgProps = pdf.getImageProperties(dataUrl);
     const imgHeight = pdfWidth / imgProps.width * imgProps.height;
-    pdf.addImage(dataUrl, option.imageType, 0, 0, pdfWidth, imgHeight);
-    await pdf.save(fileName, { returnPromise: true });
-    spinner.stop();
+    pdf.addImage(dataUrl, imageType, 0, 0, pdfWidth, imgHeight);
 
+    try {
+      await pdf.save(option.fileName, { returnPromise: true });
+    } catch (e) {
+      console.error(e);
+    }
+
+    this.__showNodesUsingGivenSelector(node, option.hideDomNodeUsingGivenSelectors);
+
+    if (option.spin) {
+      this.spinner.stop();
+    }
   }
 
   // Initialize the basic needs
@@ -49,26 +68,94 @@ class PrintHtmlToPDF {
         unit: 'px',
         format: 'a4',
       },
-      imageType: 'image/png',
-      filename: 'print-html-to-pdf.pdf',
+      spin: false,
+      fileName: 'default',
+      hideDomNodeUsingGivenSelectors: {
+        id: [],
+        class: []
+      }
     };
+    this.spinner = spinner;
   };
 
-  // Initialize the modal
-  __initializePrintModalPopup = async () => {
 
+  /*
+  Hide dom node using given selectors
+  @params:
+        : node is dom element
+        : selectors is array of selectors {
+          id: [],
+          class: []
+        }
+*/
+  __hideNodesUsingGivenSelector = (node, selectors) => {
+    const idSelectors = selectors.id;
+    const classSelectors = selectors.class;
+
+    if (idSelectors.length) {
+      idSelectors.forEach(s => {
+        const ele = node.getElementById(s);
+        ele.style.display = 'none';
+      });
+    }
+
+    if (classSelectors.length) {
+      classSelectors.forEach(s => {
+        const elements = node.getElementsByClassName(s);
+        [...elements].forEach(
+          (ele, index, array) => {
+            ele.style.display = 'none';
+          }
+        );
+      });
+    }
+
+  };
+
+  /*
+ Show dom node using given selectors
+ @params:
+       : node is dom element
+       : selectors is array of selectors {
+         id: [],
+         class: []
+       }
+*/
+  __showNodesUsingGivenSelector = (node, selectors) => {
+    const idSelectors = selectors.id;
+    const classSelectors = selectors.class;
+
+    if (idSelectors.length) {
+      idSelectors.forEach(s => {
+        const ele = node.getElementById(s);
+        ele.style.display = '';
+      });
+    }
+
+    if (classSelectors.length) {
+      classSelectors.forEach(s => {
+        const elements = node.getElementsByClassName(s);
+        [...elements].forEach(
+          (ele, index, array) => {
+            ele.style.display = '';
+          }
+        );
+      });
+    }
   };
 
   // Convert html to png image
-  __htmlToImageDataUrl = async (node, spinner) => {
+  __htmlToImageDataUrl = async (node, option) => {
     return new Promise((resolve, reject) => {
       domtoimage.toPng(node)
-        .then(function (dataUrl) {
+        .then((dataUrl) => {
           resolve(dataUrl);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.error('printHtmlToPDF', error);
-          spinner.stop();
+          if (option.spin) {
+            this.spinner.stop();
+          }
           reject(error);
         });
     });

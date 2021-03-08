@@ -33,10 +33,19 @@ import printHtmlToPDF from "print-html-to-pdf";
 const printButton = document.getElementById("print-button");
 printButton.addEventListener("click", async (event) => {
   const node = document.getElementById("print-me");
-  const jsPDFOption = {
-    jsPDF: {
-      format: "a4",
-    },
+  const pdfOption = {
+     jsPDF: {
+       unit: 'px',
+       format: 'a4',
+     },
+      spin: false,
+      fileName: 'default',
+      // You can hide element which you don't want to be part of pdf
+      hideDomNodeUsingGivenSelectors: {
+        id: [],
+        class: []
+      }
+   }
   };
   await printHtmlToPDF.print(node, jsPDFOption);
 });

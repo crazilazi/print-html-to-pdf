@@ -92,6 +92,7 @@ class PrintHtmlToPDF {
   __hideNodesUsingGivenSelector = (node, selectors) => {
     const idSelectors = selectors.id;
     const classSelectors = selectors.class;
+    const elementSelectors = selectors.nodes;
 
     if (idSelectors.length) {
       idSelectors.forEach(s => {
@@ -111,8 +112,8 @@ class PrintHtmlToPDF {
       });
     }
 
-    if (nodes.length) {
-      nodes.forEach(ele => {
+    if (elementSelectors && elementSelectors.length) {
+      elementSelectors.forEach(ele => {
         ele.style.display = 'none';
       });
     }
@@ -131,6 +132,7 @@ class PrintHtmlToPDF {
   __showNodesUsingGivenSelector = (node, selectors) => {
     const idSelectors = selectors.id;
     const classSelectors = selectors.class;
+    const elementSelectors = selectors.nodes;
 
     if (idSelectors.length) {
       idSelectors.forEach(s => {
@@ -150,8 +152,9 @@ class PrintHtmlToPDF {
       });
     }
 
-    if (nodes.length) {
-      nodes.forEach(ele => {
+
+    if (elementSelectors && elementSelectors.length) {
+      elementSelectors.forEach(ele => {
         ele.style.display = '';
       });
     }

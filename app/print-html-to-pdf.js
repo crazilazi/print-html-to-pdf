@@ -25,7 +25,14 @@ class PrintHtmlToPDF {
       hideDomNodeUsingGivenSelectors: {
         id: [],
         class: []
-      }
+      },
+      margin: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+      },
+      fitToPage: false
    };
  */
   print = async (node, option = {}) => {
@@ -45,8 +52,27 @@ class PrintHtmlToPDF {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     const imgProps = pdf.getImageProperties(dataUrl);
-    const imgHeight = pdfWidth / imgProps.width * imgProps.height;
-    pdf.addImage(dataUrl, imageType, 0, 0, pdfWidth, imgHeight);
+
+    if (option.fitToPage) {
+      pdf.addImage(dataUrl, imageType, option.margin.left, option.margin.top,
+        pdfWidth - option.margin.left - option.margin.right, pdfHeight - option.margin.top - option.margin.bottom);
+    } else {
+      const imgHeight = pdfWidth / imgProps.width * imgProps.height;
+      let heightLeft = imgHeight;
+      let position = 0;
+      pdf.addImage(dataUrl, imageType, option.margin.left, option.margin.top,
+        pdfWidth - option.margin.left - option.margin.right, imgHeight - option.margin.top - option.margin.bottom);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(dataUrl, imageType, option.margin.left, position,
+          pdfWidth - option.margin.left - option.margin.right, imgHeight - option.margin.top - option.margin.bottom);
+        heightLeft -= pdfHeight;
+      }
+
+    }
 
     try {
       await pdf.save(option.fileName, { returnPromise: true });
@@ -74,7 +100,14 @@ class PrintHtmlToPDF {
         id: [],
         class: [],
         nodes: []
-      }
+      },
+      margin: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+      },
+      fitToPage: false
     };
     this.spinner = spinner;
   };

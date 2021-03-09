@@ -39,13 +39,7 @@ printButton.addEventListener("click", async (event) => {
        format: 'a4',
      },
       spin: false,
-      fileName: 'default',
-      // You can hide element which you don't want to be part of pdf
-      hideDomNodeUsingGivenSelectors: {
-        id: [],
-        class: [],
-        nodes: []
-      },
+      fileName: 'default'
    }
   };
   await printHtmlToPDF.print(node, pdfOption);

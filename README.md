@@ -8,7 +8,7 @@ Print HTML to pdf using jsPDF &amp; dom-to-image.
 npm i print-html-to-pdf
 ```
 
-## simple example
+## Simple example
 
 ```html
 <button id="print-button">Print</button>
@@ -46,7 +46,7 @@ printButton.addEventListener("click", async (event) => {
 });
 ```
 
-## fit entire content in one page example
+## Fit entire content in one page example
 
 ```html
 <button id="print-button">Print</button>
@@ -87,7 +87,7 @@ printButton.addEventListener("click", async (event) => {
 });
 ```
 
-## set pdf margin example
+## Set pdf margin example
 
 ```html
 <button id="print-button">Print</button>
@@ -132,7 +132,7 @@ printButton.addEventListener("click", async (event) => {
 });
 ```
 
-## ignore dom element example
+## Ignore dom element example
 
 ```html
 <button id="print-button">Print</button>
